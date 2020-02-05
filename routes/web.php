@@ -12,34 +12,36 @@
 */
 
 Route::get('/', function () {
-    return view('home');
+    return redirect()->route('home');
+});
+
+Route::get('/tescategory', function(){
+    return view('app.kategoriProduk.index');
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(["middleware" => "auth"], function(){
     Route::get('home', 'HomeController@index')->name('home');
     Route::get('profile', 'ProfileController@index')->name('profile');
     Route::put('profile/{id}', 'ProfileController@update')->name('profileUpdate');
 });
-Route::group(["middleware" => "role.adminUtama"], function(){
+Route::group(["middleware" => "role.au"], function(){
     Route::resource("informasiToko", "InformasiTokoController");
     Route::resource("users", "UserController");
 });
-Route::group(["middleware" => "role.adminGudang"], function(){
+Route::group(["middleware" => "role.ag"], function(){
     Route::resource("currencies", "CurrencyController");
     Route::resource("ppn", "PpnController");
     Route::resource("units", "UnitController");
     Route::resource("persentaseKeuntungan", "PersentaseKeuntunganController");
     Route::resource("bahan", "BahanController");
-    Route::resource("kategoriProduk", "CategoryController");
+    Route::resource("category", "CategoryController");
     Route::resource("produk", "ProdukController");
     Route::resource("produkKosong", "ProdukKosongController");
     Route::get('produkMasuk', 'ProdukMasukController@index')->name('produkMasuk');
 });
-Route::group(["middleware" => "role.kasir"], function(){
+Route::group(["middleware" => "role.k"], function(){
     Route::resource('transaksi', 'CartController');
     Route::get('transaksiClean', 'CartController@transaksiClean')->name('transaksiClean');
     Route::resource('checkout', 'CheckoutController');

@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $category = Category::all();
+        return view('app.kategoriProduk.index', compact('category'));
     }
 
     /**
@@ -22,9 +23,9 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $r)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -35,7 +36,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category;
+        $category->kategori = $r->kategori;
+        $category->save();
+        return redirect()->route('kategoriProduk.index')->with('kategori');
     }
 
     /**
@@ -44,9 +48,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -55,9 +59,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -67,9 +71,12 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request)
     {
-        //
+        $category = Category::find($request->id);
+        $category->kategori = $request->kategori;
+        $category->save();
+        return redirect()->route('kategoriProduk.index');
     }
 
     /**
@@ -78,8 +85,10 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+        return redirect()->route('kategoriProduk.index');
     }
 }
